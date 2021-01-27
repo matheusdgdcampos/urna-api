@@ -5,6 +5,7 @@ const CandidatesController = require('../controllers/CandidatesController')
 const candidatesRoutes = Router()
 const candidatesController = new CandidatesController()
 
-candidatesRoutes.post('/', candidatesController.increment)
+candidatesRoutes.put('/voto', candidatesController.increment)
+candidatesRoutes.post('/cadastrar', candidatesController.create)
 
 module.exports = candidatesRoutes

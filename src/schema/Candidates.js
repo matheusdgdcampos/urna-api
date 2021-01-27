@@ -3,9 +3,9 @@ const { Schema, model } = require('mongoose')
 const Candidates = model(
   'candidates',
   new Schema({
-    plate: String,
-    code: Number,
-    votes: Number,
+    chapa: String,
+    codigo: Number,
+    votos: Number,
   })
 )
 

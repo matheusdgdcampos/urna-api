@@ -4,7 +4,7 @@ const Users = model(
   'users',
   new Schema({
     codigo: Number,
-    voted: {
+    votou: {
       default: false,
     },
   })
