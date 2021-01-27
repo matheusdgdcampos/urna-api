@@ -12,7 +12,8 @@
   },
   "scripts": {
     "dev": "nodemon ./src/app.js",
-    "lint": "eslint . --ext .js --fix"
+    "lint": "eslint . --ext .js --fix",
+    "start": "node ./src/app.js"
   },
   "devDependencies": {
     "dotenv": "^8.2.0",
