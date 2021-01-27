@@ -1,12 +1,10 @@
 const { Schema, model } = require('mongoose')
 
 const Users = model(
-  'users',
+  'usuarios',
   new Schema({
-    codigo: Number,
-    votou: {
-      default: false,
-    },
+    codigo: String,
+    votou: Boolean,
   })
 )
 

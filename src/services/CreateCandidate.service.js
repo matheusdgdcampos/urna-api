@@ -2,21 +2,21 @@ const Candidates = require('../schema/Candidates')
 const AppError = require('../errors/AppError')
 
 class CreateCandidateService {
-  async execute({ plate = '', code = 0 }) {
-    const findCandidate = await Candidates.findOne({ code })
+  async execute({ chapa = '', codigo = 0 }) {
+    const findCandidate = await Candidates.findOne({ codigo })
 
     if (findCandidate) {
-      throw new AppError('Candidate already exists')
+      throw new AppError('Candidato já cadastrado!')
     }
 
-    if (plate === '' || code === 0) {
-      throw new AppError('The plate must be a valid name')
+    if (chapa === '' || codigo === 0) {
+      throw new AppError('Insira um nome de chapa válido!')
     }
 
     const createCandidate = new Candidates({
-      plate,
-      code,
-      votes: 0,
+      chapa,
+      codigo,
+      votos: 0,
     })
 
     await createCandidate.save()

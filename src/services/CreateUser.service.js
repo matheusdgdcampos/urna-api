@@ -11,6 +11,7 @@ class CreateUserService {
 
     const user = new Users({
       codigo,
+      votou: false,
     })
 
     await user.save()

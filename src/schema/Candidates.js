@@ -1,7 +1,7 @@
 const { Schema, model } = require('mongoose')
 
 const Candidates = model(
-  'candidates',
+  'candidatos',
   new Schema({
     chapa: String,
     codigo: Number,

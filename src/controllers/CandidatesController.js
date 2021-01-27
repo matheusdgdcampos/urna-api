@@ -2,16 +2,17 @@ const VoteCandidateService = require('../services/VoteCandidate.service')
 const CreateCandidateService = require('../services/CreateCandidate.service')
 
 class CandidatesController {
-  constructor() {
-    this.voteCandidate = new VoteCandidateService()
-    this.createCandidate = new CreateCandidateService()
-  }
-
   async increment(request, response, next) {
     try {
-      const { code } = request.body
+      const { codigo } = request.body
+      const { _id } = request.params
 
-      const votedCandidate = await this.voteCandidate.execute(code)
+      const voteCandidate = new VoteCandidateService()
+
+      const votedCandidate = await voteCandidate.execute({
+        codigo,
+        userId: _id,
+      })
 
       return response.status(200).json(votedCandidate)
     } catch (error) {
@@ -21,11 +22,13 @@ class CandidatesController {
 
   async create(request, response, next) {
     try {
-      const { plate, code } = request.body
+      const { chapa, codigo } = request.body
 
-      const candidate = await this.createCandidate.execute({
-        code,
-        plate,
+      const createCandidate = new CreateCandidateService()
+
+      const candidate = await createCandidate.execute({
+        chapa,
+        codigo,
       })
 
       return response.status(201).json(candidate)
