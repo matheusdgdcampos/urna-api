@@ -2,7 +2,7 @@ const Users = require('../schema/Users')
 const AppError = require('../errors/AppError')
 
 class CreateUserService {
-  async execute(codigo = 0) {
+  async execute({ codigo = 0, tipo = '' }) {
     const userExists = await Users.findOne({ codigo })
 
     if (userExists) {
@@ -12,6 +12,7 @@ class CreateUserService {
     const user = new Users({
       codigo,
       votou: false,
+      tipo,
     })
 
     await user.save()

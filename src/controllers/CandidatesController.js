@@ -4,14 +4,13 @@ const CreateCandidateService = require('../services/CreateCandidate.service')
 class CandidatesController {
   async increment(request, response, next) {
     try {
-      const { codigo } = request.body
-      const { _id } = request.params
+      const { codigo, id } = request.body
 
       const voteCandidate = new VoteCandidateService()
 
       const votedCandidate = await voteCandidate.execute({
         codigo,
-        userId: _id,
+        userId: id,
       })
 
       return response.status(200).json(votedCandidate)

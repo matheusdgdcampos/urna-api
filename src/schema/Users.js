@@ -5,6 +5,7 @@ const Users = model(
   new Schema({
     codigo: String,
     votou: Boolean,
+    tipo: String,
   })
 )
 
