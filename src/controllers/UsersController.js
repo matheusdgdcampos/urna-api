@@ -1,6 +1,17 @@
 const CreateUserService = require('../services/CreateUser.service')
+const User = require('../schema/Users')
 
 class UsersController {
+  async index(request, response, next) {
+    try {
+      const users = await User.find()
+
+      return response.json(users)
+    } catch (error) {
+      next(error)
+    }
+  }
+
   async create(request, response, next) {
     try {
       const { codigo, tipo } = request.body

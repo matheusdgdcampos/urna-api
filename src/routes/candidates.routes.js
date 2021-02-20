@@ -7,5 +7,6 @@ const candidatesController = new CandidatesController()
 
 candidatesRoutes.put('/:_id/voto', candidatesController.increment)
 candidatesRoutes.post('/cadastrar', candidatesController.create)
+candidatesRoutes.get('/', candidatesController.index)
 
 module.exports = candidatesRoutes

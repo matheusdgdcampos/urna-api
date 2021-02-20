@@ -10,10 +10,14 @@ class VoteCandidateService {
       throw new AppError('Candidato não encontrado')
     }
 
-    const findUser = await User.findById({ _id: userId })
+    const findUser = await User.findById(userId)
 
     if (!findUser) {
       throw new AppError('Usuário não encontrado!')
+    }
+
+    if (findUser.votou) {
+      throw new AppError('Você já efetuou seu voto, obrigado!')
     }
 
     findCandidate.votos += 1

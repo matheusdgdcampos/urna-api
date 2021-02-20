@@ -1,16 +1,28 @@
 const VoteCandidateService = require('../services/VoteCandidate.service')
 const CreateCandidateService = require('../services/CreateCandidate.service')
+const Candidate = require('../schema/Candidates')
 
 class CandidatesController {
+  async index(request, response, next) {
+    try {
+      const candidates = await Candidate.find()
+
+      return response.json(candidates)
+    } catch (error) {
+      next(error)
+    }
+  }
+
   async increment(request, response, next) {
     try {
-      const { codigo, id } = request.body
+      const { codigo } = request.body
+      const { _id } = request.params
 
       const voteCandidate = new VoteCandidateService()
 
       const votedCandidate = await voteCandidate.execute({
         codigo,
-        userId: id,
+        userId: _id,
       })
 
       return response.status(200).json(votedCandidate)
