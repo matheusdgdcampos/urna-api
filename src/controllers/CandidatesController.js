@@ -1,5 +1,6 @@
 const VoteCandidateService = require('../services/VoteCandidate.service')
 const CreateCandidateService = require('../services/CreateCandidate.service')
+const DeleteCandidateService = require('../services/DeleteCandidate.service')
 const Candidate = require('../schema/Candidates')
 
 class CandidatesController {
@@ -13,7 +14,7 @@ class CandidatesController {
     }
   }
 
-  async increment(request, response, next) {
+  async update(request, response, next) {
     try {
       const { codigo } = request.body
       const { _id } = request.params
@@ -46,6 +47,16 @@ class CandidatesController {
     } catch (error) {
       next(error)
     }
+  }
+
+  async delete(request, response, next) {
+    const { _id } = request.params
+
+    const deleteCandidate = new DeleteCandidateService()
+
+    const messageStatus = await deleteCandidate.execute(_id)
+
+    return response.status(200).json(messageStatus)
   }
 }
 
