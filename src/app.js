@@ -6,7 +6,7 @@ if (process.env.NODE === 'development') {
   const path = require('path')
 
   const app = express()
-  const port = 3333
+  const port = process.env.PORT || 3333
 
   const catchErrorMiddleware = require('./middleware/catchError')
   const routes = require('./routes')
@@ -25,7 +25,7 @@ if (process.env.NODE === 'development') {
   const path = require('path')
 
   const app = express()
-  const port = 3333
+  const port = process.env.PORT || 3333
 
   const catchErrorMiddleware = require('./middleware/catchError')
   const routes = require('./routes')
