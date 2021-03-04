@@ -1,5 +1,7 @@
 const Candidates = require('../schema/Candidates')
 const AppError = require('../errors/AppError')
+const fs = require('fs')
+const path = require('path')
 
 class DeleteCandidateService {
   async execute(candidateId = 0) {
@@ -7,6 +9,20 @@ class DeleteCandidateService {
 
     if (!findCandidate) {
       throw new AppError('Candidato não cadastrado')
+    }
+
+    const avatarPath = path.resolve(
+      __dirname,
+      '..',
+      '..',
+      'uploads',
+      findCandidate.avatar
+    )
+
+    const fileExists = fs.promises.stat(avatarPath)
+
+    if (fileExists) {
+      await fs.promises.unlink(avatarPath)
     }
 
     const excludeCandidate = new Candidates(findCandidate)

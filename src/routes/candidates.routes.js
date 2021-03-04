@@ -1,13 +1,24 @@
 const { Router } = require('express')
 
 const CandidatesController = require('../controllers/CandidatesController')
+const upload = require('../config/upload')
 
 const candidatesRoutes = Router()
 const candidatesController = new CandidatesController()
 
 candidatesRoutes.put('/:_id/voto', candidatesController.update)
-candidatesRoutes.post('/cadastrar', candidatesController.create)
+candidatesRoutes.post(
+  '/cadastrar',
+  upload.single('avatar'),
+  candidatesController.create
+)
 candidatesRoutes.get('/', candidatesController.index)
 candidatesRoutes.delete('/delete/:_id', candidatesController.delete)
+candidatesRoutes.patch(
+  '/:_id/avatar',
+  upload.single('avatar'),
+  candidatesController.avatar
+)
+candidatesRoutes.get('/:_id/show', candidatesController.show)
 
 module.exports = candidatesRoutes

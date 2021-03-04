@@ -6,6 +6,7 @@ const Candidates = model(
     chapa: String,
     codigo: Number,
     votos: Number,
+    avatar: String,
   })
 )
 
