@@ -14,7 +14,7 @@ class CandidatesController {
           _id: candidate._id,
           chapa: candidate.chapa,
           codigo: candidate.codigo,
-          avatar: `${process.env.BASE_URL}/picture${candidate.avatar}`,
+          avatar: `${process.env.BASE_URL}/picture/${candidate.avatar}`,
           votos: candidate.votos,
         }
 
@@ -37,7 +37,7 @@ class CandidatesController {
         _id: candidate._id,
         chapa: candidate.chapa,
         codigo: candidate.codigo,
-        avatar: `${process.env.BASE_URL}/picture${candidate.avatar}`,
+        avatar: `${process.env.BASE_URL}/picture/${candidate.avatar}`,
         votos: candidate.votos,
       }
 
