@@ -103,13 +103,17 @@ class CandidatesController {
   }
 
   async delete(request, response, next) {
-    const { _id } = request.params
+    try {
+      const { _id } = request.params
 
-    const deleteCandidate = new DeleteCandidateService()
+      const deleteCandidate = new DeleteCandidateService()
 
-    const messageStatus = await deleteCandidate.execute(_id)
+      const messageStatus = await deleteCandidate.execute(_id)
 
-    return response.status(200).json(messageStatus)
+      return response.status(200).json(messageStatus)
+    } catch (error) {
+      next(error)
+    }
   }
 }
 
