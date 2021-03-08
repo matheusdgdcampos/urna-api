@@ -20,6 +20,6 @@ candidatesRoutes.patch(
   candidatesController.avatar
 )
 candidatesRoutes.get('/:_id/show', candidatesController.show)
-candidatesRoutes.put('/candidato/edit/:_id', candidatesController.update)
+candidatesRoutes.put('/edit/:_id', candidatesController.update)
 
 module.exports = candidatesRoutes
