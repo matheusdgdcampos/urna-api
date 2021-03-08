@@ -2,6 +2,7 @@ const VoteCandidateService = require('../services/VoteCandidate.service')
 const CreateCandidateService = require('../services/CreateCandidate.service')
 const DeleteCandidateService = require('../services/DeleteCandidate.service')
 const UpdateCandidateAvatarService = require('../services/UpdateCandidateAvatar.service')
+const UpdateCandidateService = require('../services/UpdateCandidate.service')
 const Candidate = require('../schema/Candidates')
 
 class CandidatesController {
@@ -47,7 +48,7 @@ class CandidatesController {
     }
   }
 
-  async update(request, response, next) {
+  async vote(request, response, next) {
     try {
       const { codigo } = request.body
       const { _id } = request.params
@@ -60,6 +61,25 @@ class CandidatesController {
       })
 
       return response.status(200).json(votedCandidate)
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  async update(request, response, next) {
+    try {
+      const { chapa, codigo } = request.body
+      const { _id } = request.params
+
+      const updateCandidate = new UpdateCandidateService()
+
+      const updatedCandidate = await updateCandidate.execute({
+        _id,
+        chapa,
+        codigo,
+      })
+
+      return response.status(200).json(updatedCandidate)
     } catch (error) {
       next(error)
     }

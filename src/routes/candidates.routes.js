@@ -6,7 +6,7 @@ const upload = require('../config/upload')
 const candidatesRoutes = Router()
 const candidatesController = new CandidatesController()
 
-candidatesRoutes.put('/:_id/voto', candidatesController.update)
+candidatesRoutes.put('/:_id/voto', candidatesController.vote)
 candidatesRoutes.post(
   '/cadastrar',
   upload.single('avatar'),
@@ -20,5 +20,6 @@ candidatesRoutes.patch(
   candidatesController.avatar
 )
 candidatesRoutes.get('/:_id/show', candidatesController.show)
+candidatesRoutes.post('/candidato/edit/:_id', candidatesController.update)
 
 module.exports = candidatesRoutes
