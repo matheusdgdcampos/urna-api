@@ -5,18 +5,24 @@ const AppError = require('../errors/AppError')
 
 class UpdateCandidateAvatarService {
   async execute({ filename = '', candidateId = 0 }) {
-    const filePath = path.resolve(__dirname, '..', '..', 'uploads', filename)
+    const candidateExists = await Candidates.findById(candidateId)
+
+    if (!candidateExists) {
+      throw new AppError('Candidato não cadastrado')
+    }
+
+    const filePath = path.resolve(
+      __dirname,
+      '..',
+      '..',
+      'uploads',
+      candidateExists.avatar
+    )
 
     const existsFile = await fs.promises.stat(filePath)
 
     if (existsFile) {
       await fs.promises.unlink(filePath)
-    }
-
-    const candidateExists = await Candidates.findById(candidateId)
-
-    if (!candidateExists) {
-      throw new AppError('Candidato não cadastrado')
     }
 
     candidateExists.avatar = filename
