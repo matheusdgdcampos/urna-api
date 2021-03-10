@@ -11,7 +11,7 @@ class SessionController {
 
       return response.status(200).json(user)
     } catch (error) {
-      next(error)
+      return response.status(400).json(error)
     }
   }
 }

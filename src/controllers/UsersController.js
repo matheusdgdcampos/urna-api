@@ -25,7 +25,7 @@ class UsersController {
 
       return response.status(201).json(user)
     } catch (error) {
-      next(error)
+      return response.status(400).json(error)
     }
   }
 }

@@ -19,7 +19,7 @@ candidatesRoutes.patch(
   upload.single('avatar'),
   candidatesController.avatar
 )
-candidatesRoutes.get('/:_id/show', candidatesController.show)
+candidatesRoutes.get('/show', candidatesController.show)
 candidatesRoutes.put('/edit/:_id', candidatesController.update)
 
 module.exports = candidatesRoutes

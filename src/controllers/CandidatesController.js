@@ -4,6 +4,7 @@ const DeleteCandidateService = require('../services/DeleteCandidate.service')
 const UpdateCandidateAvatarService = require('../services/UpdateCandidateAvatar.service')
 const UpdateCandidateService = require('../services/UpdateCandidate.service')
 const Candidate = require('../schema/Candidates')
+const AppError = require('../errors/AppError')
 
 class CandidatesController {
   async index(request, response, next) {
@@ -30,9 +31,13 @@ class CandidatesController {
 
   async show(request, response, next) {
     try {
-      const { _id } = request.params
+      const { codigo } = request.body
 
-      const candidate = await Candidate.findById(_id)
+      const candidate = await Candidate.findOne({ codigo })
+
+      if (!candidate) {
+        throw new AppError('Candidato não cadastrado')
+      }
 
       const replacedCandidate = {
         _id: candidate._id,
@@ -44,7 +49,7 @@ class CandidatesController {
 
       return response.status(200).json(replacedCandidate)
     } catch (error) {
-      next(error)
+      return response.status(error.statusCode).json(error)
     }
   }
 
@@ -62,7 +67,7 @@ class CandidatesController {
 
       return response.status(200).json(votedCandidate)
     } catch (error) {
-      next(error)
+      return response.status(400).json(error)
     }
   }
 
@@ -81,7 +86,7 @@ class CandidatesController {
 
       return response.status(200).json(updatedCandidate)
     } catch (error) {
-      next(error)
+      return response.status(400).json(error)
     }
   }
 
@@ -99,7 +104,7 @@ class CandidatesController {
 
       return response.status(200).json(updatedCandidate)
     } catch (error) {
-      next(error)
+      return response.status(400).json(error)
     }
   }
 
@@ -118,7 +123,7 @@ class CandidatesController {
 
       return response.status(201).json(candidate)
     } catch (error) {
-      next(error)
+      return response.status(400).json(error)
     }
   }
 
@@ -132,7 +137,7 @@ class CandidatesController {
 
       return response.status(200).json(messageStatus)
     } catch (error) {
-      next(error)
+      return response.status(400).json(error)
     }
   }
 }
