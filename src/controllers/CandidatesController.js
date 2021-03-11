@@ -31,7 +31,7 @@ class CandidatesController {
 
   async show(request, response, next) {
     try {
-      const { codigo } = request.body
+      const { codigo } = request.params
 
       const candidate = await Candidate.findOne({ codigo })
 
