@@ -19,7 +19,7 @@ class DeleteCandidateService {
       findCandidate.avatar
     )
 
-    const fileExists = await fs.promises.stat(avatarPath)
+    const fileExists = fs.existsSync(avatarPath)
 
     if (fileExists) {
       await fs.promises.unlink(avatarPath)
