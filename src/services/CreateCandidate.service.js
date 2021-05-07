@@ -1,10 +1,16 @@
 const Candidates = require('../schema/Candidates')
 const AppError = require('../errors/AppError')
-const fs = require('fs')
-const path = require('path')
+const {
+  transformImageFileInBase64URI,
+} = require('../utils/transformImageFileInBase64URI')
 
 class CreateCandidateService {
-  async execute({ chapa = '', codigo = 0, avatar = '' }) {
+  async execute({
+    chapa = '',
+    codigo = 0,
+    originalFileName = '',
+    imageBuffer,
+  }) {
     const findCandidate = await Candidates.findOne({ codigo })
 
     if (findCandidate) {
@@ -15,27 +21,29 @@ class CreateCandidateService {
       throw new AppError('Insira um nome de chapa válido!')
     }
 
-    if (avatar.length === 0) {
-      throw new AppError('Imagem de candidato não cadastrada!')
+    const imageUri = transformImageFileInBase64URI(
+      originalFileName,
+      imageBuffer
+    )
+
+    if (imageUri) {
+      const createCandidate = new Candidates({
+        chapa,
+        codigo,
+        avatar: imageUri,
+        votos: 0,
+      })
+
+      await createCandidate.save()
+
+      return createCandidate
     }
 
-    const createCandidate = new Candidates({
-      chapa,
-      codigo,
-      avatar,
-      votos: 0,
-    })
-
-    const folderUploads = path.resolve(__dirname, '..', '..', 'uploads')
-    const folderExists = await fs.promises.stat(folderUploads)
-
-    if (!folderExists) {
-      await fs.promises.mkdir(folderUploads)
-    }
-
-    await createCandidate.save()
-
-    return createCandidate
+    throw new AppError(
+      'Não foi possível criar candidato',
+      400,
+      'somente são aceitos arquivos de imagem .jpg ou .png'
+    )
   }
 }
 

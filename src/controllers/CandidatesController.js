@@ -11,19 +11,7 @@ class CandidatesController {
     try {
       const candidates = await Candidate.find()
 
-      const parsedCandidates = candidates.map(candidate => {
-        const parsed = {
-          _id: candidate._id,
-          chapa: candidate.chapa,
-          codigo: candidate.codigo,
-          avatar: `${process.env.BASE_URL}/picture/${candidate.avatar}`,
-          votos: candidate.votos,
-        }
-
-        return parsed
-      })
-
-      return response.json(parsedCandidates)
+      return response.json(candidates)
     } catch (error) {
       next(error)
     }
@@ -39,15 +27,7 @@ class CandidatesController {
         throw new AppError('Candidato não cadastrado')
       }
 
-      const replacedCandidate = {
-        _id: candidate._id,
-        chapa: candidate.chapa,
-        codigo: candidate.codigo,
-        avatar: `${process.env.BASE_URL}/picture/${candidate.avatar}`,
-        votos: candidate.votos,
-      }
-
-      return response.status(200).json(replacedCandidate)
+      return response.status(200).json(candidate)
     } catch (error) {
       return response.status(error.statusCode).json(error)
     }
@@ -93,13 +73,15 @@ class CandidatesController {
   async avatar(request, response, next) {
     try {
       const { _id } = request.params
-      const fileName = request.file.filename
+      const originalFileName = request.file.originalname
+      const imageBuffer = request.file.buffer
 
       const updateCandidateAvatar = new UpdateCandidateAvatarService()
 
       const updatedCandidate = await updateCandidateAvatar.execute({
         candidateId: _id,
-        filename: fileName,
+        originalFileName,
+        imageBuffer,
       })
 
       return response.status(200).json(updatedCandidate)
@@ -111,14 +93,16 @@ class CandidatesController {
   async create(request, response, next) {
     try {
       const { chapa, codigo } = request.body
-      const filename = request.file.filename
+      const originalFileName = request.file.originalname
+      const imageBuffer = request.file.buffer
 
       const createCandidate = new CreateCandidateService()
 
       const candidate = await createCandidate.execute({
         chapa,
         codigo,
-        avatar: filename,
+        originalFileName,
+        imageBuffer,
       })
 
       return response.status(201).json(candidate)

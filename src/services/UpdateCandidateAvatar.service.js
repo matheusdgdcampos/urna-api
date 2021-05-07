@@ -1,45 +1,37 @@
-const fs = require('fs')
-const path = require('path')
 const Candidates = require('../schema/Candidates')
 const AppError = require('../errors/AppError')
+const {
+  transformImageFileInBase64URI,
+} = require('../utils/transformImageFileInBase64URI')
 
 class UpdateCandidateAvatarService {
-  async execute({ filename = '', candidateId = 0 }) {
+  async execute({ originalFileName = '', candidateId = 0, imageBuffer }) {
     const candidateExists = await Candidates.findById(candidateId)
 
     if (!candidateExists) {
       throw new AppError('Candidato não cadastrado')
     }
 
-    const filePath = path.resolve(
-      __dirname,
-      '..',
-      '..',
-      'uploads',
-      candidateExists.avatar
+    const imageUri = transformImageFileInBase64URI(
+      originalFileName,
+      imageBuffer
     )
 
-    const existsFile = await fs.promises.stat(filePath)
+    if (imageUri) {
+      candidateExists.avatar = imageUri
 
-    if (existsFile) {
-      await fs.promises.unlink(filePath)
+      const updatedCandidate = new Candidates(candidateExists)
+
+      await updatedCandidate.save()
+
+      return updatedCandidate
     }
 
-    candidateExists.avatar = filename
-
-    const updatedCandidate = new Candidates(candidateExists)
-
-    await updatedCandidate.save()
-
-    const replacedCandidate = {
-      _id: updatedCandidate._id,
-      chapa: updatedCandidate.chapa,
-      codigo: updatedCandidate.codigo,
-      avatar: `${process.env.BASE_URL}/picture${updatedCandidate.avatar}`,
-      votos: updatedCandidate.votos,
-    }
-
-    return replacedCandidate
+    throw new AppError(
+      'Não foi possível atualizar foto do candidato.',
+      400,
+      'Somente é permitido arquivos de imagem com extensão .jpeg ou .png.'
+    )
   }
 }
 

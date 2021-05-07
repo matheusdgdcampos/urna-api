@@ -5,6 +5,7 @@ const catchError = (error, request, response, next) => {
     ? response.status(error.statusCode).json({
         status: error.statusCode,
         message: error.message,
+        sugestion: error.sugestion,
       })
     : response.status(500).json({
         status: 500,
